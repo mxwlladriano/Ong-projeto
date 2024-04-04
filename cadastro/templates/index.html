@@ -1,0 +1,583 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto py-8 px-10 shadow-lg rounded-lg mt-20">
+    
+    <h2 class="text-white text-2xl font-semibold text-center mb-8">Cadastro</h2>
+
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+      <ul class="flex overflow-x-auto text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+        <li class="me-2" role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg" id="identificacao-tab" data-tabs-target="#identificacao" type="button" role="tab" aria-controls="identificacao" aria-selected="false">Dados Pessoais</button>
+        </li>
+        {% if user.unidade == 'setor_idoso' or user.unidade == 'setor_adolescente' or user.is_superuser %}
+        <li class="me-2" role="presentation">
+          <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg" id="acolhimento-tab" data-tabs-target="#acolhimento" type="button" role="tab" aria-controls="acolhimento" aria-selected="false">Dados Acolhimento</button>
+        </li>
+        {% endif %}
+        {% if user.unidade == 'crea' or user.is_superuser %}
+        <li class="me-2" role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="origem-demanda-tab" data-tabs-target="#origem-demanda" type="button" role="tab" aria-controls="origem-demanda" aria-selected="false">Origem Demanda</button>
+        </li>
+
+        <li class="me-2" role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="caracterizacao-maus-tratos-tab" data-tabs-target="#caracterizacao-maus-tratos" type="button" role="tab" aria-controls="caracterizacao-maus-tratos" aria-selected="false">Maus Tratos</button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="denunciante-conduta-tab" data-tabs-target="#denunciante-conduta" type="button" role="tab" aria-controls="denunciante-conduta" aria-selected="false">Denunciante Conduta</button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="situacao-habitacional-tab" data-tabs-target="#situacao-habitacional" type="button" role="tab" aria-controls="situacao-habitacional" aria-selected="false">Situação Habitacional</button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dados-responsavel-tab" data-tabs-target="#dados-responsavel" type="button" role="tab" aria-controls="dados-responsavel" aria-selected="false">Dados do Responsável</button>
+        </li>
+        <li role="presentation">
+            <button class="inline-block px-4 py-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="composicao-familiar-tab" data-tabs-target="#composicao-familiar" type="button" role="tab" aria-controls="composicao-familiar" aria-selected="false">Composição Familiar</button>
+        </li>
+        {% endif %}
+    </ul>
+    </div>
+    
+    <div id="default-tab-content">
+        
+        <form method="post" action="{% url 'cadastro:cadastrar' %}">
+
+            {% csrf_token %}
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="identificacao" role="tabpanel" aria-labelledby="identificacao-tab">
+                <div class="p-4">
+                  <label class="text-white" for="dataAtendimento">Data de Atendimento:</label>
+                  {{ form.dataAtendimento }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="id_nome">Nome:</label>
+                  {{ form.nome }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="dataNascimento">Data de Nascimento:</label>
+                  {{ form.dataNascimento }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="idade">Idade:</label>
+                  {{ form.idade }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="apelido">Apelido:</label>
+                  {{ form.apelido }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="faixaEtaria">Faixa Etária:</label>
+                  {{ form.faixaEtaria }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="endereco">Endereço:</label>
+                  {{ form.endereco }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="numero">Número:</label>
+                  {{ form.numero }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="bairro">Bairro:</label>
+                  {{ form.bairro }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="zona">Zona:</label>
+                  {{ form.zona }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="pontoReferencia">Ponto de Referência:</label>
+                  {{ form.pontoReferencia }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="telefone">Telefone:</label>
+                  {{ form.telefone }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="pai">Pai:</label>
+                  {{ form.pai }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="mae">Mãe:</label>
+                  {{ form.mae }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="rg">RG:</label>
+                  {{ form.rg }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="cpf">CPF:</label>
+                  {{ form.cpf }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="tituloEleitor">Título de Eleitor:</label>
+                  {{ form.tituloEleitor }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="nis">NIS:</label>
+                  {{ form.nis }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="carteiraTrabalho">Carteira de Trabalho:</label>
+                  {{ form.carteiraTrabalho }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="reservista">Reservista:</label>
+                  {{ form.reservista }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="naturalidade">Naturalidade:</label>
+                  {{ form.naturalidade }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="nacionalidade">Nacionalidade:</label>
+                  {{ form.nacionalidade }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="sexo">Sexo:</label>
+                  {{ form.sexo }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="orientacaoSexual">Orientação Sexual:</label>
+                  {{ form.orientacaoSexual }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="cor">Cor:</label>
+                  {{ form.cor }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="estadoCivil">Estado Civil:</label>
+                  {{ form.estadoCivil }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="escolaridade">Escolaridade:</label>
+                  {{ form.escolaridade }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="profissao">Profissão:</label>
+                  {{ form.profissao }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="salario">Salário:</label>
+                  {{ form.salario }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="localTrabalho">Local de Trabalho:</label>
+                  {{ form.localTrabalho }}
+                </div>
+                <div class="p-4">
+                  <label class="text-white" for="horarioTrabalho">Horário de Trabalho:</label>
+                  {{ form.horarioTrabalho }}
+                </div>
+            </div>
+            {% if user.unidade != 'crea' and not user.is_superuser and user.unidade != 'setor_idoso' %}
+            <button type="submit" class="inline-block px-4 py-2 border-b-2 rounded-t-lg bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">Salvar Formulário</button>
+            {% endif %}
+
+            {% if user.is_superuser or user.unidade == 'setor_idoso' or user.unidade == 'setor_adolescente' %}
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="acolhimento" role="tabpanel" aria-labelledby="acolhimento-tab">
+              <div class="p-4">
+                <label class="text-white" for="id_dataEntrada">Data de Entrada:</label>
+                {{ acolhimento.dataEntrada }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_dataSaida">Data de Saída:</label>
+                {{ acolhimento.dataSaida }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_causaAcolhimento">Causa do Acolhimento:</label><br>
+                {{ acolhimento.causaAcolhimento }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_acompanhamentoAudiencia">Está em Acompanhamento de Audiência:</label><br>
+                {{ acolhimento.acompanhamentoAudiencia }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_guiaDeAcolhimento">Tem guia de Acolhimento?</label>
+                {{ acolhimento.guiaDeAcolhimento }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_conduzidaAoAcolhimento">Conduzida ao Acolhimento por:</label><br>
+                {{ acolhimento.conduzidaAoAcolhimento }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_conduzidaAoAcolhimentoOutros">Descrição (se escolhido "Outros"):</label><br>
+                {{ acolhimento.conduzidaAoAcolhimentoOutros }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_documentosRecebidos">Documentos do acolhido recebidos:</label><br>
+                {{ acolhimento.documentosRecebidos }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_documentosRecebidosOutros">Descrição (se escolhido "Outros"):</label><br>
+                {{ acolhimento.documentosRecebidosOutros }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_objetosPessoaisRecebidos">Objetos pessoais recebidos:</label><br>
+                {{ acolhimento.objetosPessoaisRecebidos }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_condicoesFisicas">Condições físicas:</label><br>
+                {{ acolhimento.condicoesFisicas }}
+              </div>
+            
+              <div class="p-4">
+                <label class="text-white" for="id_profissionalQueRecebeu">Profissional que recebeu:</label><br>
+                {{ acolhimento.profissionalQueRecebeu }}
+              </div>
+              {% if user.unidade == 'setor_idoso' or user.unidade == 'setor_adolescente' %}
+              <button type="submit" class="inline-block px-4 py-2 border-b-2 rounded-t-lg bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">Salvar Formulário</button>
+              {% endif %}
+  
+            </div>
+            {% endif %}
+
+
+            {% if user.unidade == 'crea' or user.is_superuser %}
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="origem-demanda" role="tabpanel" aria-labelledby="origem-demanda-tab">
+                <div class="p-4">
+                    <label for="origemDemandaPoliticasPublicas">Origem de Demanda - Políticas Públicas:</label>
+                    {{ origemDemanda.origemDemandaPoliticasPublicas }}
+                  </div>
+                  <div class="p-4">
+                    <label for="origemDemandaPoliticasPublicasOutros">Outros Políticas Públicas:</label>
+                    {{ origemDemanda.origemDemandaPoliticasPublicasOutros }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaOutrosIndique">Origem de Demanda - Outros, indique:</label>
+                    {{ origemDemanda.origemDemandaOutrosIndique }}
+                  </div>
+                  <div class="p-4">
+                    <label for="origemDemandaOutrosIndiqueOutros">Outro Texto Outros, Indique:</label>
+                    {{ origemDemanda.origemDemandaOutrosIndiqueOutros }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaEncaminhamento">Origem de Demanda - Encaminhamento:</label>
+                    {{ origemDemanda.origemDemandaEncaminhamento }}
+                  </div>
+                  <div class="p-4">
+                    <label for="origemDemandaEncaminhamentoOutro">Outro Encaminhamento:</label>
+                    {{ origemDemanda.origemDemandaEncaminhamentoOutro }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaPerfilTitular">Origem de Demanda - Perfil Titular:</label>
+                    {{ origemDemanda.origemDemandaPerfilTitular }}
+                  </div>
+                  <div class="p-4">
+                    <label for="origemDemandaPerfilTitularOutro">Outro Perfil Titular:</label>
+                    {{ origemDemanda.origemDemandaPerfilTitularOutro }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaEstuda">Origem de Demanda - Estuda:</label>
+                    {{ origemDemanda.origemDemandaEstuda }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaTrabalha">Origem de Demanda - Trabalha:</label>
+                    {{ origemDemanda.origemDemandaTrabalha }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaProgramasSociais">Origem de Demanda - Programas Sociais:</label>
+                    {{ origemDemanda.origemDemandaProgramasSociais }}
+                  </div>
+                  <div class="p-4">
+                    <label for="origemDemandaProgramasSociaisOutro">Outro Programa Social:</label>
+                    {{ origemDemanda.origemDemandaProgramasSociaisOutro }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label for="origemDemandaDeficiencia">Origem de Demanda - Deficiência:</label>
+                    {{ origemDemanda.origemDemandaDeficiencia }}
+                  </div>
+                  <div class="p-4">
+                    <label for="origemDemandaDeficienciaOutro">Outra Deficiência:</label>
+                    {{ origemDemanda.origemDemandaDeficienciaOutro }}
+                  </div>
+            </div>
+
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="caracterizacao-maus-tratos" role="tabpanel" aria-labelledby="caracterizacao-maus-tratos-tab">
+                <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="supostoAgressor">Suposto Agressor:</label>
+                    {{ caracterizacaoMausTratos.supostoAgressor }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="supostoAgressorOutrosDescricao">Outros (Suposto Agressor):</label>
+                    {{ caracterizacaoMausTratos.supostoAgressorOutrosDescricao }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="tipoViolencia">Tipo de Violência:</label>
+                    {{ caracterizacaoMausTratos.tipoViolencia }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="tipoViolenciaOutrosDescricao">Outros (Tipo de Violência):</label>
+                    {{ caracterizacaoMausTratos.tipoViolenciaOutrosDescricao }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="tipoViolenciaSexualDescricao">Violência Sexual (Descrição):</label>
+                    {{ caracterizacaoMausTratos.tipoViolenciaSexualDescricao }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="caracteristicaAgressao">Característica da Agressão:</label>
+                    {{ caracterizacaoMausTratos.caracteristicaAgressao }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="caracteristicaAgressaoDataPeriodo">Data ou Período da Agressão:</label>
+                    {{ caracterizacaoMausTratos.caracteristicaAgressaoDataPeriodo }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="caracteristicaAgressaoPeriodo">Período da Agressão:</label>
+                    {{ caracterizacaoMausTratos.caracteristicaAgressaoPeriodo }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="localOcorrencia">Local da Ocorrência:</label>
+                    {{ caracterizacaoMausTratos.localOcorrencia }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="localOcorrenciaOutroDescricao">Outro (Local da Ocorrência):</label>
+                    {{ caracterizacaoMausTratos.localOcorrenciaOutroDescricao }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" class="text-white" for="enderecoLocalOcorrencia">Endereço Local Ocorrência:</label>
+                    {{ caracterizacaoMausTratos.enderecoLocalOcorrencia }}
+                  </div>
+            </div>
+            
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="denunciante-conduta" role="tabpanel" aria-labelledby="denunciante-conduta-tab">
+                <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="denuncianteGrauRelacionamento">Grau de Relacionamento:</label>
+                    {{ denuncianteConduta.denuncianteGrauRelacionamento }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="denuncianteGrauRelacionamentoOutro">Outro - Grau de Relacionamento:</label>
+                    {{ denuncianteConduta.denuncianteGrauRelacionamentoOutro }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="condutaEspecificar">Especificar:</label>
+                    {{ denuncianteConduta.condutaEspecificar }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="condutaEspecificarOutro">Outro - Especificar:</label>
+                    {{ denuncianteConduta.condutaEspecificarOutro }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="condutaSinaisViolencia">Sinais de Violência:</label>
+                    {{ denuncianteConduta.condutaSinaisViolencia }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="assistenciaPostoSaude">Posto de Saúde:</label>
+                    {{ denuncianteConduta.assistenciaPostoSaude }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="assistenciaAgenteSaude">Agente de Saúde:</label>
+                    {{ denuncianteConduta.assistenciaAgenteSaude }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="resideCom">Reside com:</label>
+                    {{ denuncianteConduta.resideCom }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" class="text-white" for="resideOutro">Outro - Especificar:</label>
+                    {{ denuncianteConduta.resideOutro }}
+                  </div>
+            </div>
+    
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="situacao-habitacional" role="tabpanel" aria-labelledby="situacao-habitacional-tab">
+  
+                <div class="p-4">
+                    <label class="text-white" class="text-white" for="moradia">Moradia:</label>
+                    {{ situacaoHabitacional.moradia }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="caracteristicas">Características:</label>
+                    {{ situacaoHabitacional.caracteristicas }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="territorio">Território:</label>
+                    {{ situacaoHabitacional.territorio }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="estruturaRua">Estrutura da Rua:</label>
+                    {{ situacaoHabitacional.estruturaRua }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="iluminacaoPublica">Iluminação Pública:</label>
+                    {{ situacaoHabitacional.iluminacaoPublica }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="abastecimento">Abastecimento de Água:</label>
+                    {{ situacaoHabitacional.abastecimento }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="consumoAgua">Consumo de Água:</label>
+                    {{ situacaoHabitacional.consumoAgua }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="esgoto">Esgoto:</label>
+                    {{ situacaoHabitacional.esgoto }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="lixo">Lixo:</label>
+                    {{ situacaoHabitacional.lixo }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="familia">Família:</label>
+                    {{ situacaoHabitacional.familia }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="caracteristicasNumeroComodos">Números de cômodos:</label>
+                    {{ situacaoHabitacional.caracteristicasNumeroComodos }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="caracteristicasNumeroDormitorios">Números de dormitórios:</label>
+                    {{ situacaoHabitacional.caracteristicasNumeroDormitorios }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="caracteristicasPessoasPorDormitorios">Pessoas por dormitórios:</label>
+                    {{ situacaoHabitacional.caracteristicasPessoasPorDormitorios }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="territorioLocalDificilAcessoGeo">Local com difícil acesso geográfico:</label>
+                    {{ situacaoHabitacional.territorioLocalDificilAcessoGeo }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="territorioRiscoDesabamentoAlagamento">Risco de desabamento e alagamento:</label>
+                    {{ situacaoHabitacional.territorioRiscoDesabamentoAlagamento }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="territorioFortePresencaViol">Forte presença de violência:</label>
+                    {{ situacaoHabitacional.territorioFortePresencaViol }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="lixoOutro">Outro - Lixo:</label>
+                    {{ situacaoHabitacional.lixoOutro }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="familiaUsoPsicoativaQualSpa">Família usa Psicoativo? Qual?</label>
+                    {{ situacaoHabitacional.familiaUsoPsicoativaQualSpa }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="familiaUsoPsicoativaQuem">Família usa Psicoativo? Quem?</label>
+                    {{ situacaoHabitacional.familiaUsoPsicoativaQuem }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="familiaPessoasDeficientesQuem">Família tem deficiente? Quem?</label>
+                    {{ situacaoHabitacional.familiaPessoasDeficientesQuem }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" class="text-white" for="familiaVivenciaSituacaoViolenciaObservacao">Observação:</label>
+                    {{ situacaoHabitacional.familiaVivenciaSituacaoViolenciaObservacao }}
+                  </div>
+            </div>
+        
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="dados-responsavel" role="tabpanel" aria-labelledby="dados-responsavel-tab">
+                <div class="p-4">
+                    <label class="text-white" for="nome">Nome do Responsável:</label>
+                    {{ dadosResponsavel.nome }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="idade">Idade do Responsável:</label>
+                    {{ dadosResponsavel.idade }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="dataNascimento">Data de Nascimento do Responsável:</label>
+                    {{ dadosResponsavel.dataNascimento }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" for="sexo">Sexo do Responsável:</label>
+                    {{ dadosResponsavel.sexo }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="cor">Cor do Responsável:</label>
+                    {{ dadosResponsavel.cor }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="enderecoResponsavel">Endereço do Responsável:</label>
+                    {{ dadosResponsavel.enderecoResponsavel }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" for="telefone">Telefone do Responsável:</label>
+                    {{ dadosResponsavel.telefone }}
+                  </div>
+            </div>
+            
+            <div class="hidden p-4 rounded-lg grid grid-cols-3 gap-4" id="composicao-familiar" role="tabpanel" aria-labelledby="dados-responsavel-tab">
+                <div class="p-4">
+                    <label class="text-white" for="nome">Nome do Familiar:</label>
+                    {{ composicaoFamiliar.nome }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="idade">Idade do Familiar:</label>
+                    {{ composicaoFamiliar.idade }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="parentesco">Parentesco com o Responsável:</label>
+                    {{ composicaoFamiliar.parentesco }}
+                  </div>
+                  
+                  <div class="p-4">
+                    <label class="text-white" for="escolaridade">Escolaridade do Familiar:</label>
+                    {{ composicaoFamiliar.escolaridade }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="ocupacao">Ocupação do Familiar:</label>
+                    {{ composicaoFamiliar.ocupacao }}
+                  </div>
+                  <div class="p-4">
+                    <label class="text-white" for="renda">Renda do Familiar:</label>
+                    {{ composicaoFamiliar.renda }}
+                  </div>
+              <button type="submit" class="inline-block px-4 py-2 border-b-2 rounded-t-lg bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">Salvar Formulário</button>
+            </div>
+            {% endif %}
+        </form>
+
+    </div>
+    
+    </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+          var fields = document.querySelectorAll('input[type=text], input[type=password], input[type=email]');
+          fields.forEach(function(field) {
+              field.setAttribute('autocomplete', 'off');
+          });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+      var labels = document.querySelectorAll('label');
+      labels.forEach(function(label) {
+          label.classList.add('text-white');
+      });
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+from cadastro.forms.CadastroForm import CadastroForm
+from cadastro.forms.OrigemDemandaForm import OrigemDemandaForm
+from cadastro.forms.CaracterizacaoMausTratosForm import CaracterizacaoMausTratosForm
+from cadastro.forms.DenuncianteCondutaForm import DenuncianteCondutaForm
+from cadastro.forms.SituacaoHabitacionalForm import SituacaoHabitacionalForm
+from cadastro.forms.DadosResponsavelForm import DadosResponsavelForm
+from cadastro.forms.ComposicaoFamiliarForm import ComposicaoFamiliarForm
+
+from cadastro.forms.BeneficioForm import BeneficioForm
+from cadastro.forms.AcolhimentoForm import AcolhimentoForm

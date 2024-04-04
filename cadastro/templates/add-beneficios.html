@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-8 px-10 shadow-lg rounded-lg mt-20">
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_nome" class="text-white block text-lg font-medium mb-1">Benefício</label>
+        {{form.nome}}
+        <label for="id_beneficiado" class="text-white block text-lg font-medium mb-1">Beneficiado</label>
+        <select id="id_beneficiado" class=" w-full" name="beneficiado">
+          <option value="">Selecione a pessoa</option>
+        </select>        
+        
+        <button type="submit" class="mt-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Adicionar</button>
+
+    </form>
+
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#id_beneficiado').select2({
+      ajax: {
+        url: '/autocomplete-cadastro/',
+        dataType: 'json',
+        delay: 250,
+        processResults: function(data) {
+          var results = [];
+          $.each(data, function(index, item) {
+            results.push({
+              id: item.id,  // Use o ID do cadastro como ID
+              text: item.nome + ' - ' + item.cpf 
+            });
+          });
+          return {
+            results: results
+          };
+        },
+        cache: true
+      },
+      theme: 'default',
+      allowClear: true,
+      minimumInputLength: 3,
+      language: 'pt-BR',
+    });
+  });
+</script>
+{% endblock content %}

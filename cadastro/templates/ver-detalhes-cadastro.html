@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Cadastro - {{object.numeroProntuario}}</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <h2>Nome: {{ object.nome }}</h2>
+
+    <table>
+        <tr>
+            <th>Número do Prontuário</th>
+            <td>{{ object.numeroProntuario }}</td>
+            <th>Data de Atendimento</th>
+            <td>{{ object.dataAtendimento }}</td>
+        </tr>
+        <tr>
+            <th>Data de Nascimento</th>
+            <td>{{ object.dataNascimento }}</td>
+            <th>Idade</th>
+            <td>{{ object.idade }}</td>
+        </tr>
+        <tr>
+            <th>Apelido</th>
+            <td>{{ object.apelido }}</td>
+            <th>Faixa Etária</th>
+            <td>{{ object.get_faixaEtaria_display }}</td>
+        </tr>
+        <tr>
+            <th>Naturalidade</th>
+            <td>{{ object.naturaliade }}</td>
+            <th>Nacionalidade</th>
+            <td>{{ object.nacionalidade }}</td>
+        </tr>
+        <tr>
+            <th>Pai</th>
+            <td>{{ object.pai }}</td>
+            <th>Mãe</th>
+            <td>{{ object.mae }}</td>
+        </tr>
+        <tr>
+            <th>Sexo</th>
+            <td>{{ object.get_sexo_display }}</td>
+            <th>Orientação Sexual</th>
+            <td>{{ object.orientacaoSexual }}</td>
+        </tr>
+        <tr>
+            <th>Escolaridade</th>
+            <td>{{ object.get_escolaridade_display }}</td>
+            <th>Profissão</th>
+            <td>{{ object.profissao }}</td>
+        </tr>
+        <tr>
+            <th>Salário</th>
+            <td>{{ object.salario }}</td>
+            <th>Local de Trabalho</th>
+            <td>{{ object.localTrabalho }}</td>
+        </tr>
+        <tr>
+            <th>Estado Civil</th>
+            <td>{{ object.estadoCivil }}</td>
+        </tr>
+        
+    </table>
+
+    <h2>Endereço</h2>
+
+    <table>
+        <tr>
+            <th>Endereço</th>
+            <td>{{ object.endereco }}</td>
+            <th>Número</th>
+            <td>{{ object.numero }}</td>
+        </tr>
+        <tr>
+            <th>Bairro</th>
+            <td>{{ object.bairro }}</td>
+            <th>Zona</th>
+            <td>{{ object.zona }}</td>
+        </tr>
+        <tr>
+            <th>Ponto de Referência</th>
+            <td>{{ object.pontoReferencia }}</td>
+        </tr>
+    </table>
+    
+    <h2>Documentos</h2>
+    
+    <table>
+        <tr>
+            <th>RG</th>
+            <td>{{ object.rg }}</td>
+            <th>CPF</th>
+            <td>{{ object.cpf }}</td>
+        </tr>
+        <tr>
+            <th>NIS</th>
+            <td>{{ object.nis }}</td>
+            <th>Carteira de Trabalho</th>
+            <td>{{ object.carteiraTrabalho }}</td>
+        </tr>
+        <tr>
+            <th>Título de Eleitor</th>
+            <td>{{ object.tituloEleitor }}</td>
+            <th>Reservista</th>
+            <td>{{ object.reservista }}</td>
+        </tr>
+    </table>
+    
+    {% if user.unidade == 'cras_bairro_da_paz' or user.unidade == 'cras_bairro_panorama' or user.unidade == 'cras_serra_pelada' or user.is_superuser %}
+    {% if beneficios %}
+
+    <h2>Beneficios Solicitados</h2>
+
+    
+    <table>
+    {% for beneficio in beneficios %}
+    <tr>
+        <th>Nome</th>
+        <td>{{ beneficio.get_nome_display }}</td>
+        <th>Quem Cadastrou</th>
+        <td>{{ beneficio.qmCadastrou|capfirst }} - {{beneficio.qmCadastrou.get_unidade_display}}</td>
+        <th>Quando</th>
+        <td>{{ beneficio.dataCadastro }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    
+    {% endif %}
+    {% endif %}
+    
+    
+    {% if user.unidade == 'setor_idoso' or user.unidade == 'setor_adolescente' or user.is_superuser %}
+        {% if object.acolhimento %}
+        <h2>Acolhimento</h2>    
+
+        <table>
+            <tr>
+                <th>Data de Entrada</th>
+                <td>{{ object.acolhimento.dataEntrada }}</td>
+            </tr>
+            <tr>
+                <th>Data de Saída</th>
+                <td>{{ object.acolhimento.dataSaida }}</td>
+            </tr>
+            <tr>
+                <th>Causa do Acolhimento</th>
+                <td>{{ object.acolhimento.causaAcolhimento }}</td>
+            </tr>
+            <tr>
+                <th>Acompanhamento de Audiência</th>
+                <td>{{ object.acolhimento.acompanhamentoAudiencia }}</td>
+            </tr>
+            <tr>
+                <th>Tem Guia de Acolhimento?</th>
+                <td>{% if object.acolhimento.guiaDeAcolhimento %} Sim {% else %} Não {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Conduzida ao Acolhimento por</th>
+                <td>{{ object.acolhimento.get_conduzidaAoAcolhimento_display }}</td>
+            </tr>
+            {% if object.acolhimento.conduzidaAoAcolhimento == 'outro' %}
+                <tr>
+                    <th>Descrição (se escolhido "Outros")</th>
+                    <td>{{ object.acolhimento.conduzidaAoAcolhimentoOutros }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>Documentos do Acolhido Recebidos</th>
+                <td>{{ object.acolhimento.get_documentosRecebidos_display }}</td>
+            </tr>
+            {% if object.acolhimento.documentosRecebidos == 'outros' %}
+                <tr>
+                    <th>Descrição (se escolhido "Outros")</th>
+                    <td>{{ object.acolhimento.documentosRecebidosOutros }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>Objetos Pessoais Recebidos</th>
+                <td>{{ object.acolhimento.objetosPessoaisRecebidos }}</td>
+            </tr>
+            <tr>
+                <th>Condições Físicas</th>
+                <td>{{ object.acolhimento.condicoesFisicas }}</td>
+            </tr>
+            <tr>
+                <th>Profissional que Recebeu</th>
+                <td>{{ object.acolhimento.profissionalQueRecebeu }}</td>
+            </tr>
+        </table>
+        
+    {% endif %}
+
+    {% if user.unidade == 'crea' %}
+        {% if object.caracterizacaoMausTratos %}
+    
+        <h2>Caracterização de Maus Tratos</h2>
+
+        <table>
+            <tr>
+                <th>Suposto Agressor</th>
+                <td>{{ object.caracterizacaoMausTratos.supostoAgressor }}</td>
+                <th>Outros (Suposto Agressor)</th>
+                <td>{{ object.caracterizacaoMausTratos.supostoAgressorOutrosDescricao }}</td>
+            </tr>
+            <tr>
+                <th>Tipo de Violência</th>
+                <td>{{ object.caracterizacaoMausTratos.tipoViolencia }}</td>
+                <th>Outros (Tipo de Violência)</th>
+                <td>{{ object.caracterizacaoMausTratos.tipoViolenciaOutrosDescricao }}</td>
+            </tr>
+            <tr>
+                <th>Violência Sexual (Descrição)</th>
+                <td>{{ object.caracterizacaoMausTratos.tipoViolenciaSexualDescricao }}</td>
+                <th>Característica da Agressão</th>
+                <td>{{ object.caracterizacaoMausTratos.caracteristicaAgressao }}</td>
+            </tr>
+            <tr>
+                <th>Data ou Período da Agressão</th>
+                <td>{{ object.caracterizacaoMausTratos.caracteristicaAgressaoDataPeriodo }}</td>
+                <th>Período da Agressão</th>
+                <td>{{ object.caracterizacaoMausTratos.caracteristicaAgressaoPeriodo }}</td>
+            </tr>
+            <tr>
+                <th>Local da Ocorrência</th>
+                <td>{{ object.caracterizacaoMausTratos.localOcorrencia }}</td>
+                <th>Outro (Local da Ocorrência)</th>
+                <td>{{ object.caracterizacaoMausTratos.localOcorrenciaOutroDescricao }}</td>
+            </tr>
+            <tr>
+                <th>Endereço Local Ocorrência</th>
+                <td>{{ object.caracterizacaoMausTratos.enderecoLocalOcorrencia }}</td>
+            </tr>
+        </table>
+        {% endif %}
+    {% endif %}
+
+    {% if object.origemDemanda %}
+
+    <h2>Origem Demanda</h2>
+
+    <table>
+        <tr>
+            <th>Políticas Públicas</th>
+            <td>{{ object.origemDemanda.origemDemandaPoliticasPublicas }}</td>
+            <th>Outros (Políticas Públicas)</th>
+            <td>{{ object.origemDemanda.origemDemandaPoliticasPublicasOutros }}</td>
+        </tr>
+        <tr>
+            <th>Outros, Indique</th>
+            <td>{{ object.origemDemanda.origemDemandaOutrosIndique }}</td>
+            <th>Outro Texto (Outros, Indique)</th>
+            <td>{{ object.origemDemanda.origemDemandaOutrosIndiqueOutros }}</td>
+        </tr>
+        <tr>
+            <th>Encaminhamento</th>
+            <td>{{ object.origemDemanda.origemDemandaEncaminhamento }}</td>
+            <th>Outro Encaminhamento</th>
+            <td>{{ object.origemDemanda.origemDemandaEncaminhamentoOutro }}</td>
+        </tr>
+        <tr>
+            <th>Perfil Titular</th>
+            <td>{{ object.origemDemanda.origemDemandaPerfilTitular }}</td>
+            <th>Outro Perfil Titular</th>
+            <td>{{ object.origemDemanda.origemDemandaPerfilTitularOutro }}</td>
+        </tr>
+        <tr>
+            <th>Estuda</th>
+            <td>{{ object.origemDemanda.origemDemandaEstuda }}</td>
+            <th>Trabalha</th>
+            <td>{{ object.origemDemanda.origemDemandaTrabalha }}</td>
+        </tr>
+        <tr>
+            <th>Programas Sociais</th>
+            <td>{{ object.origemDemanda.origemDemandaProgramasSociais }}</td>
+            <th>Outro Programa Social</th>
+            <td>{{ object.origemDemanda.origemDemandaProgramasSociaisOutro }}</td>
+        </tr>
+        <tr>
+            <th>Deficiência</th>
+            <td>{{ object.origemDemanda.origemDemandaDeficiencia }}</td>
+            <th>Outra Deficiência</th>
+            <td>{{ object.origemDemanda.origemDemandaDeficienciaOutro }}</td>
+        </tr>
+    </table>
+
+    {% endif %}
+
+    {% if user.unidade == 'crea' %}
+        {% if object.denuncianteConduta %}
+
+        <h2>Denunciante Conduta</h2>
+
+        <table>
+            <tr>
+                <th>Grau de Relacionamento</th>
+                <td>{{ object.denuncianteConduta.get_denuncianteGrauRelacionamento_display }}</td>
+                <th>Outro - Grau de Relacionamento</th>
+                <td>{{ object.denuncianteConduta.denuncianteGrauRelacionamentoOutro }}</td>
+            </tr>
+            <tr>
+                <th>Especificar</th>
+                <td>{{ object.denuncianteConduta.get_condutaEspecificar_display }}</td>
+                <th>Outro - Especificar</th>
+                <td>{{ object.denuncianteConduta.condutaEspecificarOutro }}</td>
+            </tr>
+            <tr>
+                <th>Sinais de Violência</th>
+                <td>{{ object.denuncianteConduta.condutaSinaisViolencia }}</td>
+                <th>Posto de Saúde</th>
+                <td>{{ object.denuncianteConduta.get_assistenciaPostoSaude_display }}</td>
+            </tr>
+            <tr>
+                <th>Agente de Saúde</th>
+                <td>{{ object.denuncianteConduta.assistenciaAgenteSaude }}</td>
+                <th>Reside com</th>
+                <td>{{ object.denuncianteConduta.get_resideCom_display }}</td>
+            </tr>
+            <tr>
+                <th>Outro - Especificar</th>
+                <td>{{ object.denuncianteConduta.resideOutro }}</td>
+            </tr>
+        </table>
+
+        {% endif %}
+    {% endif %}
+    
+    {% if user.unidade == 'crea' or user.is_superuser %}
+        {% if object.situacaoHabitacional %}
+        
+        <h2>Situação Habitacional</h2>
+
+        <table>
+            <tr>
+                <th>Moradia</th>
+                <td>{{ object.situacaoHabitacional.get_moradia_display }}</td>
+                <th>Características</th>
+                <td>{{ object.situacaoHabitacional.get_caracteristicas_display }}</td>
+                <th>Território</th>
+                <td>{{ object.situacaoHabitacional.get_territorio_display }}</td>
+            </tr>
+            <tr>
+                <th>Estrutura da Rua</th>
+                <td>{{ object.situacaoHabitacional.get_estruturaRua_display }}</td>
+                <th>Iluminação Pública</th>
+                <td>{{ object.situacaoHabitacional.get_iluminacaoPublica_display }}</td>
+                <th>Abastecimento de Água</th>
+                <td>{{ object.situacaoHabitacional.get_abastecimento_display }}</td>
+            </tr>
+            <tr>
+                <th>Consumo de Água</th>
+                <td>{{ object.situacaoHabitacional.get_consumoAgua_display }}</td>
+                <th>Esgoto</th>
+                <td>{{ object.situacaoHabitacional.get_esgoto_display }}</td>
+                <th>Lixo</th>
+                <td>{{ object.situacaoHabitacional.get_lixo_display }}</td>
+            </tr>
+            <tr>
+                <th>Família</th>
+                <td>{{ object.situacaoHabitacional.get_familia_display }}</td>
+                <th>Número de Cômodos</th>
+                <td>{{ object.situacaoHabitacional.caracteristicasNumeroComodos }}</td>
+                <th>Número de Dormitórios</th>
+                <td>{{ object.situacaoHabitacional.caracteristicasNumeroDormitorios }}</td>
+            </tr>
+            <tr>
+                <th>Pessoas por Dormitórios</th>
+                <td>{{ object.situacaoHabitacional.caracteristicasPessoasPorDormitorios }}</td>
+                <th>Local com Difícil Acesso Geografico</th>
+                <td>{% if object.situacaoHabitacional.territorioLocalDificilAcessoGeo %} Sim {% else %} Não {% endif %}</td>
+                <th>Risco de Desabamento e Alagamento</th>
+                <td>{% if object.situacaoHabitacional.territorioRiscoDesabamentoAlagamento %} Sim {% else %} Não {% endif %}</td>
+            </tr>
+            <tr>
+                <th>Forte Presença de Violência</th>
+                <td>{% if object.situacaoHabitacional.territorioFortePresencaViol %} Sim {% else %} Não {% endif %}</td>
+                <th>Outro - Lixo</th>
+                <td>{{ object.situacaoHabitacional.lixoOutro }}</td>
+                <th>Qual SPA (Uso Psicoativa)</th>
+                <td>{{ object.situacaoHabitacional.familiaUsoPsicoativaQualSpa }}</td>
+            </tr>
+            <tr>
+                <th>Quem (Uso Psicoativa)</th>
+                <td>{{ object.situacaoHabitacional.familiaUsoPsicoativaQuem }}</td>
+                <th>Quem (Pessoas Deficientes)</th>
+                <td>{{ object.situacaoHabitacional.familiaPessoasDeficientesQuem }}</td>
+                <th>Observação (Vivência em Situação de Violência)</th>
+                <td>{{ object.situacaoHabitacional.familiaVivenciaSituacaoViolenciaObservacao }}</td>
+            </tr>
+        </table>
+
+        {% endif %}
+
+    {% if object.dadosResponsavel %}
+    
+        <h2>Dados do Responsável</h2>
+
+        <table>
+            <tr>
+                <th>Nome</th>
+                <td>{{ object.dadosResponsavel.nome }}</td>
+            </tr>
+            <tr>
+                <th>Idade</th>
+                <td>{{ object.dadosResponsavel.idade }}</td>
+            </tr>
+            <tr>
+                <th>Data de Nascimento</th>
+                <td>{{ object.dadosResponsavel.dataNascimento }}</td>
+            </tr>
+            <tr>
+                <th>Sexo</th>
+                <td>{{ object.dadosResponsavel.sexo }}</td>
+            </tr>
+            <tr>
+                <th>Cor</th>
+                <td>{{ object.dadosResponsavel.cor }}</td>
+            </tr>
+            <tr>
+                <th>Endereço</th>
+                <td>{{ object.dadosResponsavel.enderecoResponsavel }}</td>
+            </tr>
+            <tr>
+                <th>Telefone</th>
+                <td>{{ object.dadosResponsavel.telefone }}</td>
+            </tr>
+        </table>
+        {% endif %}
+
+        {% if object.composicaoFamiliar %}
+        <h2>Composição Familiar</h2>
+        
+        <table>
+            {% for familiar in composicaoFamiliar %}
+                <tr>
+                    <th>Nome</th>
+                    <td>{{ familiar.nome }}</td>
+                </tr>
+                <tr>
+                    <th>Idade</th>
+                    <td>{{ familiar.idade }}</td>
+                </tr>
+                <tr>
+                    <th>Parentesco com o Responsável</th>
+                    <td>{{ familiar.parentesco }}</td>
+                </tr>
+                <tr>
+                    <th>Escolaridade</th>
+                    <td>{{ familiar.get_escolaridade_display }}</td>
+                </tr>
+                <tr>
+                    <th>Ocupação</th>
+                    <td>{{ familiar.ocupacao }}</td>
+                </tr>
+                <tr>
+                    <th>Renda</th>
+                    <td>{{ familiar.renda }}</td>
+                </tr>
+            {% endfor %}
+            
+        </table>
+        {% endif %}
+
+        {% endif %}
+    {% endif %}
+</div>
+
+</body>
+
+<script>
+
+var todasAsTDs = document.getElementsByTagName('td');
+
+for (var i = 0; i < todasAsTDs.length; i++) {
+    if (todasAsTDs[i].textContent.trim() === 'None') {
+        todasAsTDs[i].textContent = 'NA';
+    }
+}
+
+</script>
+
+</html>

@@ -1,0 +1,80 @@
+<div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative rounded-lg shadow bg-gray-700">
+
+            <div class="p-4 md:p-5 space-y-4">
+                <div class="bg-gray-900 text-white p-4 rounded-lg shadow-lg">
+                    <h2 class="text-lg font-bold mb-4">Filtros</h2>
+                    <form method="get" action="{% url 'cadastro:listar-cadastros' %}" class="grid grid-cols-2 gap-4">
+                        {% if user.unidade == 'crea' or user.is_superuser %}
+                        <div class="mb-4">
+                            <label for="idade" class="block text-sm font-medium mb-1">Idade</label>
+                            <input id="idade" type="number" name="idade" placeholder="Idade" class="p-2 border rounded bg-gray-800 text-white w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="sexo" class="block text-sm font-medium mb-1">Sexo</label>
+                            <select name="sexo" class="p-2 border rounded bg-gray-800 text-white w-full">
+                                <option value="">Sexo</option>
+                                <option value="O">Outro</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="tipoViolencia" class="block text-sm font-medium mb-1">Tipo de Violência</label>
+                            <select name="tipoViolencia" id="tipoViolencia" class="p-2 border rounded bg-gray-800 text-white w-full">
+                                <option value="">Selecione o Tipo de Violência</option>
+                                {% for value, label in tiposViolencias %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.unidade == 'cras_bairro_da_paz' or user.unidade == 'cras_bairro_panorama' or user.unidade == 'cras_serra_pelada' or user.is_superuser %}
+                        <div class="mb-4">
+                            <label for="beneficio" class="block text-sm font-medium mb-1">Selecione o Beneficio</label>
+
+                            <select name="beneficio" class="p-2 border rounded bg-gray-800 text-white w-full">
+                                <option value="">Selecione o Benefício</option>
+                                {% for value, label in beneficios %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.unidade == 'setor_idoso' or user.unidade == 'setor_adolescente' or user.is_superuser %}
+                        
+                        <div class="mb-4">
+                            <label for="idade" class="block text-sm font-medium mb-1">Idade</label>
+                            <input type="number" name="idade" placeholder="Idade" class="p-2 border rounded bg-gray-800 text-white w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="dataEntrada" class="block text-sm font-medium mb-1">Data de Entrada</label>
+                            <input type="date" name="dataEntrada" placeholder="Data de Entrada" class="p-2 border rounded bg-gray-800 text-white w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="dataSaida" class="block text-sm font-medium mb-1">Data de Saída</label>
+                            <input type="date" name="dataSaida" placeholder="Data de Saída" class="p-2 border rounded bg-gray-800 text-white w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="causaAcolhimento" class="block text-sm font-medium mb-1">Causa do Acolhimento</label>
+                            <input type="text" name="causaAcolhimento" placeholder="Causa de Acolhimento" class="p-2 border rounded bg-gray-800 text-white w-full">
+                        </div>
+                        {% endif %}
+                    
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 col-span-2 rounded">Filtrar</button>
+                    </form>
+                </div>
+                
+                
+            </div>
+
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

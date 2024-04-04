@@ -1,0 +1,6 @@
+from cadastro.views.CadastroCreateView import CadastroCreateView
+from cadastro.views.CadastroListView import CadastroListView
+from cadastro.views.CadastroDetailView import CadastroDetailView
+from cadastro.views.BeneficioCreateView import BeneficioCreateView
+
+from cadastro.views.AutocompleteCadastroView import AutocompleteCadastroView
